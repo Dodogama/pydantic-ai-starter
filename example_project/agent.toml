@@ -1,0 +1,20 @@
+# Per-project config for ml_graph.py. {python} expands to the running interpreter.
+conventions = "AGENTS.md"
+checks = ["{python} -m compileall -q ."]          # every step
+final_checks = [                                  # after the last step only
+    "{python} -m unittest -q",
+    "{python} train.py --smoke --steps 50",
+]
+eval = "{python} eval.py"                          # must print JSON with `metric` on its last line
+metric = "val_acc"
+target = 0.85
+weak_attempts = 3     # weak coder tries per step before one strong-model attempt
+max_reviews = 2       # reviewer "fix" rounds per step before replanning
+max_replans = 2
+timeout = 120         # seconds per shell command
+
+[models]
+plan = "anthropic:claude-opus-5-5"
+code = "anthropic:claude-haiku-4-5"
+review = "anthropic:claude-opus-5-5"
+escalate = "anthropic:claude-opus-5-5"
